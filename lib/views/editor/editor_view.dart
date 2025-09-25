@@ -1,15 +1,12 @@
+import 'package:edit_epub/views/editor/editor_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class EditorView extends StatefulWidget {
-  const EditorView({super.key});
+class EditorView extends StatelessWidget {
+  EditorView({super.key, required this.viewModel});
 
-  @override
-  State<EditorView> createState() => _EditorViewState();
-}
-
-class _EditorViewState extends State<EditorView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final EditorViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +17,18 @@ class _EditorViewState extends State<EditorView> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(color: Colors.deepPurple),
-                child: Text(
-                  "Menu",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+              Card(
+                child: Row(
+                  children: [
+                    ListenableBuilder(
+                      listenable: viewModel,
+                      builder: (context, child) {
+                        return Text(viewModel.folder);
+                      },
+                    ),
+                    Expanded(child: const SizedBox.shrink()),
+                    IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+                  ],
                 ),
               ),
               ListTile(

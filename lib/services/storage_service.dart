@@ -1,23 +1,23 @@
+import 'dart:io';
 import 'package:edit_epub/services/service.dart';
-import 'package:edit_epub/services/workspace_service.dart';
-import 'package:result_dart/result_dart.dart';
-import 'package:file_picker/file_picker.dart';
 
 class StorageService extends Service {
-  StorageService(this._workspaceService);
+  StorageService();
 
-  final WorkspaceService _workspaceService;
+  Future<List<File>> getTextFiles(String path) async {
+    final dir = Directory(path);
+    if (await dir.exists()) {
+      final List<File> files = [];
 
-  AsyncResult<Unit> selectFolder() async {
-    return safeExecute(() async => Success(await _selectFolder()));
-  }
+      await for (final entity in dir.list()) {
+        if (entity is File && entity.path.toLowerCase().endsWith('.txt')) {
+          files.add(entity);
+        }
+      }
 
-  Future<Unit> _selectFolder() async {
-    String? result = await FilePicker.platform.getDirectoryPath();
-    if (result == null) {
-      throw Exception('No folder selected');
+      return files;
+    } else {
+      throw Exception('Folder $dir does not exist.');
     }
-    _workspaceService.setFolder(result);
-    return unit;
   }
 }

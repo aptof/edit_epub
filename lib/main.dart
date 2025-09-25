@@ -2,6 +2,7 @@ import 'package:edit_epub/utils/dependency.dart';
 import 'package:edit_epub/utils/routes.dart';
 import 'package:edit_epub/utils/theme.dart';
 import 'package:edit_epub/views/editor/editor_view.dart';
+import 'package:edit_epub/views/editor/editor_view_model.dart';
 import 'package:edit_epub/views/home/home_view.dart';
 import 'package:edit_epub/views/home/home_view_model.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,13 @@ final _router = GoRouter(
     GoRoute(
       path: Routes.home,
       builder: (context, state) =>
-          HomeView(viewModel: HomeViewModel(context.read(), context.read())),
+          HomeView(viewModel: HomeViewModel(context.read())),
       routes: [
-        GoRoute(path: Routes.editor, builder: (context, state) => EditorView()),
+        GoRoute(
+          path: Routes.editor,
+          builder: (context, state) =>
+              EditorView(viewModel: EditorViewModel(context.read())),
+        ),
       ],
     ),
   ],
