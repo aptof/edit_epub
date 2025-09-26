@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:edit_epub/services/service.dart';
+import 'package:path/path.dart' as p;
 
 class StorageService extends Service {
   StorageService();
@@ -18,6 +19,15 @@ class StorageService extends Service {
       return files;
     } else {
       throw Exception('Folder $dir does not exist.');
+    }
+  }
+
+  Future<String> readText(File file) async {
+    final extension = p.extension(file.path);
+    if (extension != '.txt') {
+      throw Exception('File ${file.path} is not a text file');
+    } else {
+      return await file.readAsString();
     }
   }
 }

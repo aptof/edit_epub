@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 final _router = GoRouter(
-  initialLocation: Routes.editor,
+  initialLocation: Routes.home,
   routes: [
     GoRoute(
       path: Routes.home,
@@ -19,8 +19,9 @@ final _router = GoRouter(
       routes: [
         GoRoute(
           path: Routes.editor,
-          builder: (context, state) =>
-              EditorView(viewModel: EditorViewModel(context.read())),
+          builder: (context, state) => EditorView(
+            viewModel: EditorViewModel(context.read(), context.read()),
+          ),
         ),
       ],
     ),

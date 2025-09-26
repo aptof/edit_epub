@@ -20,6 +20,9 @@ class WorkspaceService extends Service with ChangeNotifier {
   String get selectedFolder => _selectedFolder;
   String get selectedFolderName => p.basename(_selectedFolder);
 
+  List<File> _textFiles = [];
+  List<File> get textFiles => UnmodifiableListView(_textFiles);
+
   AsyncResult<Unit> selectFolder() async {
     return safeExecute(() async => Success(await _selectFolder()));
   }
@@ -55,7 +58,8 @@ class WorkspaceService extends Service with ChangeNotifier {
 
   Future<List<File>> _loadFiles() async {
     if (_selectedFolder.isNotEmpty) {
-      return await _storageService.getTextFiles(selectedFolder);
+      _textFiles = await _storageService.getTextFiles(selectedFolder);
+      return UnmodifiableListView(_textFiles);
     } else {
       throw Exception('Please select a folder first');
     }
